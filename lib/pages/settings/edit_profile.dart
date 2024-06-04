@@ -65,8 +65,8 @@ class EditProfileState extends State<EditProfile> {
         return;
       }
     }
-    await _updateProfilePhoto(user, uniqueFileName);
-    await _updateCoverPhoto(uniqueFileName, context);
+    if(pfpFile != null) await _updateProfilePhoto(user, uniqueFileName);
+    if(coverFile != null) await _updateCoverPhoto(uniqueFileName, context);
 
     Provider.of<ProfileProvider>(context, listen: false).updateProfile();
     String message = 'Updated user information!';
