@@ -1,8 +1,10 @@
 import 'package:deck/backend/models/task.dart';
+import 'package:deck/backend/task/task_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:deck/pages/misc/colors.dart';
 import 'package:deck/pages/misc/widget_method.dart';
 import 'package:deck/pages/task/edit_task.dart';
+import 'package:provider/provider.dart';
 
 class ViewTaskPage extends StatefulWidget {
   final Task task;
@@ -50,6 +52,7 @@ class _ViewTaskPageState extends State<ViewTaskPage> {
           );
           if (updatedTask != null) {
             _updateTask(updatedTask);
+            await Provider.of<TaskProvider>(context,listen: false).loadTasks();
           }
         },
       ),

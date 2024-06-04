@@ -72,4 +72,14 @@ class TaskProvider extends ChangeNotifier {
     return list.any((element) => DateTime(element.deadline.month, element.deadline.day, 0, 0, 0).isAtSameMomentAs(DateTime(DateTime.now().month, DateTime.now().day, 0, 0, 0)) && !element.isDone) ? true : false;
   }
 
+  DateTime findNearestDeadline(){
+    DateTime now = DateTime.now();
+    List<Task> fake = list;
+    fake.sort((a, b) => a.deadline.compareTo(b.deadline));
+
+    DateTime result = fake.firstWhere((task) => !task.isDone && task.deadline.isAfter(now), orElse: () => Task('','','','',false,DateTime.now(),DateTime.now(),false,DateTime.now())).deadline;
+    return result;
+  }
 }
+
+

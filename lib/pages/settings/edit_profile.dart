@@ -63,8 +63,8 @@ class EditProfileState extends State<EditProfile> {
         return;
       }
     }
-    if(pfpFile != null) await _updateProfilePhoto(user, uniqueFileName);
-    if(coverFile != null) await _updateCoverPhoto(uniqueFileName, context);
+    await _updateProfilePhoto(user, uniqueFileName);
+    await _updateCoverPhoto(uniqueFileName, context);
 
     Provider.of<ProfileProvider>(context, listen: false).updateProfile();
     String message = 'Updated user information!';
@@ -124,7 +124,7 @@ class EditProfileState extends State<EditProfile> {
       Reference refPfpUpload = refDirPfpImg.child(uniqueFileName);
 
       bool pfpExists = await ProfileUtils().doesFileExist(refPfpUpload);
-      if (!pfpExists) {
+      if (!pfpExists && pfpFile != null) {
         await refPfpUpload.putFile(File(pfpFile!.path));
         String newPhotoUrl = await refPfpUpload.getDownloadURL();
         await user?.updatePhotoURL(newPhotoUrl);
@@ -143,7 +143,7 @@ class EditProfileState extends State<EditProfile> {
       Reference refCoverUpload = refDirCoverImg.child(uniqueFileName);
 
       bool coverExists = await ProfileUtils().doesFileExist(refCoverUpload);
-      if (!coverExists) {
+      if (!coverExists && coverFile != null) {
         await refCoverUpload.putFile(File(coverFile!.path));
         String photoCover = await refCoverUpload.getDownloadURL();
 
