@@ -48,6 +48,8 @@ class EditProfileState extends State<EditProfile> {
 
   Future<void> updateAccountInformation(BuildContext context) async {
     User? user = AuthService().getCurrentUser();
+    List<String>? userName = user?.displayName?.split(' ');
+    String? lastName = userName?.removeLast();
     String newName = getNewName();
     String uniqueFileName = '${AuthService().getCurrentUser()?.uid}-${DateTime.now().millisecondsSinceEpoch}';
 
@@ -56,7 +58,7 @@ class EditProfileState extends State<EditProfile> {
       return;
     }
 
-    if(newName != '${firstNameController.text} ${lastNameController.text}') await _updateDisplayName(user, newName);
+    if(newName != '$userName $lastName') await _updateDisplayName(user, newName);
     if(user?.email != emailController.text) {
       bool isEmailValid = await _updateEmail(user);
       if (!isEmailValid) {
