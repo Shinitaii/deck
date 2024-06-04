@@ -65,8 +65,8 @@ class EditProfileState extends State<EditProfile> {
         return;
       }
     }
-    if(pfpFile != null) await _updateProfilePhoto(user, uniqueFileName);
-    if(coverFile != null) await _updateCoverPhoto(uniqueFileName, context);
+    if(pfpFile != null || photoUrl != null) await _updateProfilePhoto(user, uniqueFileName);
+    if(coverUrl != Image.asset('assets/images/Deck-Logo.png')) await _updateCoverPhoto(user, uniqueFileName, context);
 
     Provider.of<ProfileProvider>(context, listen: false).updateProfile();
     String message = 'Updated user information!';
@@ -100,6 +100,15 @@ class EditProfileState extends State<EditProfile> {
   Future<bool> _updateEmail(User? user) async {
     try {
       await user?.verifyBeforeUpdateEmail(emailController.text);
+      final db = FirebaseFirestore.instance;
+      var querySnapshot = await db.collection('users').where('email', isEqualTo: AuthUtils().getEmail()).limit(1).get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        var doc = querySnapshot.docs.first;
+        String docId = doc.id;
+
+        await db.collection('users').doc(docId).update({'email': emailController.text, 'user_id': user?.uid});
+      }
       return true;
     } on FirebaseAuthException catch (e){
       String message = '';
@@ -138,24 +147,25 @@ class EditProfileState extends State<EditProfile> {
     setState(() {});
   }
 
-  Future<void> _updateCoverPhoto(String uniqueFileName, BuildContext context) async {
-    if (coverUrl != null) {
+  Future<void> _updateCoverPhoto(User? user, String uniqueFileName, BuildContext context) async {
+    if (coverUrl != Image.asset('assets/images/Deck-Logo.png')) {
       Reference refRoot = FirebaseStorage.instance.ref();
-      Reference refDirCoverImg = refRoot.child('userCovers/${AuthService().getCurrentUser()?.uid}');
+      Reference refDirCoverImg = refRoot.child('userCovers/${user?.uid}');
       Reference refCoverUpload = refDirCoverImg.child(uniqueFileName);
 
       bool coverExists = await ProfileUtils().doesFileExist(refCoverUpload);
+      print(coverExists);
       if (!coverExists && coverFile != null) {
         await refCoverUpload.putFile(File(coverFile!.path));
         String photoCover = await refCoverUpload.getDownloadURL();
+        print(photoCover);
 
         final db = FirebaseFirestore.instance;
         var querySnapshot = await db.collection('users').where('email', isEqualTo: AuthUtils().getEmail()).limit(1).get();
-
         if (querySnapshot.docs.isNotEmpty) {
           var doc = querySnapshot.docs.first;
           String docId = doc.id;
-
+          print(docId);
           await db.collection('users').doc(docId).update({'cover_photo': photoCover});
         }
       } else {

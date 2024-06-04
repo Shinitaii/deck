@@ -442,8 +442,7 @@ class _ViewDeckPageState extends State<ViewDeckPage> {
                             ),
                           ),
                         ),
-                      ),
-                      ),
+                      )
                   ],
                 ),
               ),

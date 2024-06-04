@@ -246,6 +246,8 @@ class _TaskPageState extends State<TaskPage> {
                                 },
                               ),
                             );
+                          } else {
+                            return const SizedBox(height: 0); // do not remove. tasks will not show up.
                           }
                         },
                       )
