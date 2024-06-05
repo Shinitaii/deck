@@ -52,6 +52,7 @@ class EditProfileState extends State<EditProfile> {
     String? lastName = userName?.removeLast();
     String newName = getNewName();
     String uniqueFileName = '${AuthService().getCurrentUser()?.uid}-${DateTime.now().millisecondsSinceEpoch}';
+    String coverUrlString = coverUrl.toString();
 
     if(firstNameController.text.isEmpty || lastNameController.text.isEmpty || emailController.text.isEmpty){
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Fill all the text fields!')));
@@ -65,8 +66,13 @@ class EditProfileState extends State<EditProfile> {
         return;
       }
     }
-    if(pfpFile != null || photoUrl != null) await _updateProfilePhoto(user, uniqueFileName);
-    if(coverUrl != Image.asset('assets/images/Deck-Logo.png')) await _updateCoverPhoto(user, uniqueFileName, context);
+    print('pfpFile: $pfpFile');
+    print('photoUrl: $photoUrl');
+    print('coverFile: $coverFile');
+    print('coverUrl: $coverUrl');
+    print('coverUrlString: $coverUrlString');
+    await _updateProfilePhoto(user, uniqueFileName);
+    await _updateCoverPhoto(user, uniqueFileName, context, coverUrlString);
 
     Provider.of<ProfileProvider>(context, listen: false).updateProfile();
     String message = 'Updated user information!';
@@ -140,15 +146,15 @@ class EditProfileState extends State<EditProfile> {
         String newPhotoUrl = await refPfpUpload.getDownloadURL();
         await user?.updatePhotoURL(newPhotoUrl);
       }
-    } else {
+    } else if (photoUrl == null) {
       await user!.updatePhotoURL(null);
     }
     await user?.reload();
     setState(() {});
   }
 
-  Future<void> _updateCoverPhoto(User? user, String uniqueFileName, BuildContext context) async {
-    if (coverUrl != Image.asset('assets/images/Deck-Logo.png')) {
+  Future<void> _updateCoverPhoto(User? user, String uniqueFileName, BuildContext context, String coverPhotoUrl) async {
+    if (coverPhotoUrl != Image.asset('assets/images/Deck-Logo.png').toString()) {
       Reference refRoot = FirebaseStorage.instance.ref();
       Reference refDirCoverImg = refRoot.child('userCovers/${user?.uid}');
       Reference refCoverUpload = refDirCoverImg.child(uniqueFileName);
@@ -168,16 +174,16 @@ class EditProfileState extends State<EditProfile> {
           print(docId);
           await db.collection('users').doc(docId).update({'cover_photo': photoCover});
         }
-      } else {
-        final db = FirebaseFirestore.instance;
-        var querySnapshot = await db.collection('users').where('email', isEqualTo: AuthUtils().getEmail()).limit(1).get();
+      }
+    } else if (coverPhotoUrl == Image.asset('assets/images/Deck-Logo.png').toString()) {
+      final db = FirebaseFirestore.instance;
+      var querySnapshot = await db.collection('users').where('email', isEqualTo: AuthUtils().getEmail()).limit(1).get();
 
-        if (querySnapshot.docs.isNotEmpty) {
-          var doc = querySnapshot.docs.first;
-          String docId = doc.id;
+      if (querySnapshot.docs.isNotEmpty) {
+        var doc = querySnapshot.docs.first;
+        String docId = doc.id;
 
-          await db.collection('users').doc(docId).update({'cover_photo': ''});
-        }
+        await db.collection('users').doc(docId).update({'cover_photo': ''});
       }
     }
     setState(() {});

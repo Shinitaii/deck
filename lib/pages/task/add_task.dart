@@ -155,15 +155,25 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     borderWidth: 0,
                     borderColor: Colors.transparent,
                     onPressed: () async {
+                      ///loading dialog
+                      showLoad(context);
+
                       if(_dateController.text.isEmpty || _titleController.text.isEmpty || _descriptionController.text.isEmpty){
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Fill all the text fields!')));
+                        /// stop loading
+                        hideLoad(context);
+                        ///display error
+                        showInformationDialog(context, "Error adding task","A Text field is blank! Please fill all the text fields and try again.");
                         return;
                       }
 
                       print(DateTime.parse(_dateController.text));
                       print(DateTime.now());
                       if(DateTime.parse(_dateController.text).add(const Duration(hours: 23, minutes: 59, seconds: 59)).isBefore(DateTime.now())){
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('You cannot set the deadline that\'s already in the past!')));
+                        /// stop loading
+                        hideLoad(context);
+                        ///display error
+                        showInformationDialog(context, "Error adding task"," Past deadlines aren't allowed. Please try again.");
+
                         return;
                       }
 
@@ -177,7 +187,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         "is_deleted": false,
                         "done_date": DateTime.now(),
                       };
-
+                      /// stop loading
+                      hideLoad(context);
                       Provider.of<TaskProvider>(context, listen: false).addTask(data);
                       Navigator.pop(context);
                     }),

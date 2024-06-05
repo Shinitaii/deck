@@ -4,7 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deck/backend/auth/auth_gate.dart';
 import 'package:deck/backend/auth/auth_service.dart';
 import 'package:deck/backend/fcm/fcm_service.dart';
+import 'package:deck/pages/auth/privacy_policy.dart';
 import 'package:deck/pages/auth/signup.dart';
+import 'package:deck/pages/auth/terms_of_use.dart';
 import 'package:deck/pages/misc/colors.dart';
 import 'package:deck/pages/misc/deck_icons.dart';
 import 'package:deck/pages/misc/widget_method.dart';
@@ -25,6 +27,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
   final DeckBox checkBox = DeckBox();
+  bool isLoading = false;
 
   String getAdjective(){
 
@@ -147,8 +150,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.of(context).pop(
-                          RouteGenerator.createRoute(const SignUpPage()),
+                        Navigator.of(context).push(
+                          RouteGenerator.createRoute(const TermsOfUsePage()),
                         );
                       },
                       borderRadius: BorderRadius.circular(8),
@@ -172,8 +175,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.of(context).pop(
-                          RouteGenerator.createRoute(const SignUpPage()),
+                        Navigator.of(context).push(
+                          RouteGenerator.createRoute(const PrivacyPolicyPage()),
                         );
                       },
                       borderRadius: BorderRadius.circular(8),
@@ -198,13 +201,23 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 padding: const EdgeInsets.only(top: 30),
                 child: BuildButton(
                   onPressed: () async {
+                    ///loading dialog
+                    showLoad(context);
                     if(!checkBox.isChecked){
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please check the checkbox!')));
+                      /// stop loading
+                      hideLoad(context);
+                      ///display error
+                      showInformationDialog(context, "Error Signing Up","You haven't agreed to the Terms of Use and Privacy Policy. Please try again");
+
                       return;
                     }
 
                     if(passwordController.text != confirmPasswordController.text) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Passwords do not match!')));
+                      /// stop loading
+                      hideLoad(context);
+                      ///display error
+                      showInformationDialog(context, "Error Signing Up","Passwords do not match! Please try again.");
+
                       return;
                     }
 
@@ -231,20 +244,24 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                       String message = '';
                       print(e.toString());
                       if(e.code == 'invalid-email'){
-                        message = "Invalid email format!";
+                        message = "Invalid email format! Please try again.";
                       } else if (e.code == 'email-already-in-use'){
-                        message = "Email already taken!";
+                        message = "Email is already taken! Please try again.";
                       } else if (e.code == 'weak-password'){
-                        message = "Password should be atleast 6 characters!";
+                        message = "Password should be at least 6 characters! Please try again.";
                       } else if (e.code == 'email-already-in-use'){
-                        message = "Email already in use!";
+                        message = "Email is already in use! Please try again.";
                       } else {
-                        message = "Error creating your account!";
+                        message = "Unknown Error! Please try again.";
                       }
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+                      /// stop loading
+                      hideLoad(context);
+                      showInformationDialog(context, "Error creating your account!",message);
                     } catch (e) {
                       print(e.toString());
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Something is wrong!')));
+                      /// stop loading
+                      hideLoad(context);
+                      showInformationDialog(context, "Error creating your account!", "Unknown Error! Please try again.");
                     }
 
                   },

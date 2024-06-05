@@ -45,9 +45,13 @@ class _ViewDeckPageState extends State<ViewDeckPage> {
     }
     setState(() {
       _cardsCollection = cards;
+      FlashcardUtils().sortByQuestion(_cardsCollection);
       _starredCardCollection = starredCards;
+      FlashcardUtils().sortByQuestion(_starredCardCollection);
       _filteredCardsCollection = List.from(cards);
+      FlashcardUtils().sortByQuestion(_filteredCardsCollection);
       _filteredStarredCardCollection = List.from(starredCards);
+      FlashcardUtils().sortByQuestion(_filteredStarredCardCollection);
     });
   }
 
@@ -59,11 +63,14 @@ class _ViewDeckPageState extends State<ViewDeckPage> {
       card.question.toLowerCase().contains(query) ||
           card.answer.toLowerCase().contains(query))
           .toList();
+
       _filteredStarredCardCollection = _starredCardCollection
           .where((card) =>
       card.question.toLowerCase().contains(query) ||
           card.answer.toLowerCase().contains(query))
           .toList();
+      FlashcardUtils().sortByQuestion(_filteredCardsCollection);
+      FlashcardUtils().sortByQuestion(_filteredStarredCardCollection);
     });
   }
 
@@ -270,25 +277,37 @@ class _ViewDeckPageState extends State<ViewDeckPage> {
                                         "Are you sure you want to delete '$deletedTitle'?",
                                             () async{
                                           try{
-                                            if(await removedCard.updateDeleteStatus(true, widget.deck.deckId)){
-                                              setState(() {
-                                                _cardsCollection.removeWhere((card) => card.cardId == removedCard.cardId);
-                                                _starredCardCollection.removeWhere((card) => card.cardId == removedCard.cardId);
-                                                _filteredStarredCardCollection.removeWhere((card) => card.cardId == removedCard.cardId);
-                                              });
-                                            }
+                                            await removedCard.updateDeleteStatus(true, widget.deck.deckId);
                                           }catch(e){
                                             print('View Deck Error: $e');
                                             showInformationDialog(context, 'Card Deletion Unsuccessful', 'An error occurred during the deletion process please try again');
                                             setState(() {
-                                              _filteredCardsCollection.insert(index, removedCard);
+                                              _cardsCollection.add(removedCard);
+                                              FlashcardUtils().sortByQuestion(_cardsCollection);
+                                              _filteredCardsCollection.add(removedCard);
+                                              FlashcardUtils().sortByQuestion(_filteredCardsCollection);
+                                              if(removedCard.isStarred){
+                                                _filteredStarredCardCollection.add(removedCard);
+                                                FlashcardUtils().sortByQuestion(_filteredStarredCardCollection);
+                                                _starredCardCollection.add(removedCard);
+                                                FlashcardUtils().sortByQuestion(_starredCardCollection);
+                                              }
                                             });
                                           }
 
                                         },
                                             () {
                                           setState(() {
-                                            _filteredCardsCollection.insert(index, removedCard);
+                                            _cardsCollection.add(removedCard);
+                                            FlashcardUtils().sortByQuestion(_cardsCollection);
+                                            _filteredCardsCollection.add(removedCard);
+                                            FlashcardUtils().sortByQuestion(_filteredCardsCollection);
+                                            if(removedCard.isStarred){
+                                              _filteredStarredCardCollection.add(removedCard);
+                                              FlashcardUtils().sortByQuestion(_filteredStarredCardCollection);
+                                              _starredCardCollection.add(removedCard);
+                                              FlashcardUtils().sortByQuestion(_starredCardCollection);
+                                            }
                                           });
                                         },
                                       );
@@ -391,19 +410,27 @@ class _ViewDeckPageState extends State<ViewDeckPage> {
                                             print('View Deck Error: $e');
                                             showInformationDialog(context, 'Card Deletion Unsuccessful', 'An error occurred during the deletion process please try again');
                                             setState(() {
-                                              _cardsCollection.insert(index, removedCard);
+                                              _cardsCollection.add(removedCard);
+                                              FlashcardUtils().sortByQuestion(_cardsCollection);
                                               _filteredCardsCollection.add(removedCard);
+                                              FlashcardUtils().sortByQuestion(_filteredCardsCollection);
                                               _filteredStarredCardCollection.add(removedCard);
-                                              _starredCardCollection.insert(index, removedCard);
+                                              FlashcardUtils().sortByQuestion(_filteredStarredCardCollection);
+                                              _starredCardCollection.add(removedCard);
+                                              FlashcardUtils().sortByQuestion(_starredCardCollection);
                                             });
                                           }
                                         },
                                             () {
                                           setState(() {
-                                            _cardsCollection.insert(index, removedCard);
+                                            _cardsCollection.add(removedCard);
+                                            FlashcardUtils().sortByQuestion(_cardsCollection);
                                             _filteredCardsCollection.add(removedCard);
+                                            FlashcardUtils().sortByQuestion(_filteredCardsCollection);
                                             _filteredStarredCardCollection.add(removedCard);
-                                            _starredCardCollection.insert(index, removedCard);
+                                            FlashcardUtils().sortByQuestion(_filteredStarredCardCollection);
+                                            _starredCardCollection.add(removedCard);
+                                            FlashcardUtils().sortByQuestion(_starredCardCollection);
                                           });
                                         },
                                       );
@@ -442,7 +469,7 @@ class _ViewDeckPageState extends State<ViewDeckPage> {
                             ),
                           ),
                         ),
-                      )
+                      ),
                   ],
                 ),
               ),

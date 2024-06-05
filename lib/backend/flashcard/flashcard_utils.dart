@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../models/card.dart';
+
 class FlashcardUtils{
   static final ValueNotifier<bool> updateSettingsNeeded = ValueNotifier<bool>(false);
   static final ValueNotifier<bool> updateLatestReview = ValueNotifier<bool>(false);
@@ -37,5 +39,8 @@ class FlashcardUtils{
   String cleanSpaces(String input) {
     // Use a regular expression to replace multiple consecutive spaces with a single space
     return input.replaceAll(RegExp(r'\s+'), ' ');
+  }
+  void sortByQuestion(List<Cards> cards) {
+    cards.sort((a, b) => a.question.compareTo(b.question));
   }
 }

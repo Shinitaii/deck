@@ -117,9 +117,14 @@ class _SettingPageState extends State<SettingPage> {
                 if(await _googleSignIn.isSignedIn()) {
                   await _googleSignIn.signOut();
                 }
-                Navigator.of(context).push(
+                Navigator.of(context).pushAndRemoveUntil(
                   RouteGenerator.createRoute(const SignUpPage()),
+                      (Route<dynamic> route) => false,
                 );
+                // Navigator.of(context).pop()
+                // Navigator.of(context).push(
+                //   RouteGenerator.createRoute(const SignUpPage()),
+                // );
                 // ignore: avoid_print
                 print("Log Out Clicked");
               },

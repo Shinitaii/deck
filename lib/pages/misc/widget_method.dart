@@ -2167,3 +2167,30 @@ class DeckTaskTileState extends State<DeckTaskTile> {
 
 
 
+///
+/// M E T H O D  T O  C A L L  L O A D I N G
+///
+
+
+void showLoad(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Center(
+        child:
+        CircularProgressIndicator(
+          color:DeckColors.primaryColor,
+        ),
+      );
+    },
+  );
+}
+
+
+///
+/// M E T H O D  T O  H I D E  L O A D I N G
+///
+
+void hideLoad(BuildContext context) {
+  Navigator.of(context).pop();
+}
