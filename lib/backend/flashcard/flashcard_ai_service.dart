@@ -6,7 +6,7 @@ import 'package:deck/backend/models/cardAi.dart';
 import 'package:http/http.dart' as http;
 
 class FlashcardAiService{
-  String ipAddress = "192.168.0.26";
+  String ipAddress = "192.168.0.102";
 
   Future<String> testFunction() async {
     final res = await http.get(
@@ -62,17 +62,24 @@ class FlashcardAiService{
       // If the server did not return a 200 OK response, throw an exception
       print(response.statusCode);
       print(response.body);
-      if(response.statusCode == 418){
+      if(response.statusCode == "418"){
         throw IncompleteRequestBodyException('Incomplete request body: ${response.body}');
       }else if(response.statusCode == "420"){
         throw NumberOfCardsException('Unknown number of cards: ${response.body}');
       }else if(response.statusCode == "421"){
         throw TextExtractionException('Text Extraction error: ${response.body}');
       }else if(response.statusCode == "422"){
-        throw FileDeletionError('File was not deleted: ${response.body}');
-      }else if(response.statusCode == "420"){
+        throw FileDeletionException('File was not deleted: ${response.body}');
+      }else if(response.statusCode == "423"){
+        throw NoInformationException('Incomplete request body: ${response.body}');
+      }else if(response.statusCode == "424"){
+        throw MessageRouteException('Internal server error: ${response.body}');
+      }else if(response.statusCode == "425"){
+        throw RequestException('Internal server: ${response.body}');
+      }else if(response.statusCode == "500" || response.statusCode == "501"){
         throw InternalServerErrorException('Internal server error: ${response.body}');
-      }else{
+      }
+      else{
         throw ApiException(response.statusCode, 'Error: ${response.body}');
       }
     }

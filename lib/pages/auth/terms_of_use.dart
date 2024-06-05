@@ -19,7 +19,7 @@ class TermsOfUsePage extends StatelessWidget {
      ),     body: SafeArea(
        child: SingleChildScrollView(
          child: Padding(
-           padding: EdgeInsets.only(top: 10,left: 30, right: 30),
+           padding: const EdgeInsets.only(top: 10,left: 30, right: 30),
            child: Column(
              crossAxisAlignment: CrossAxisAlignment.start,
              children: [
@@ -30,7 +30,7 @@ class TermsOfUsePage extends StatelessWidget {
                      width: MediaQuery.of(context).size.width,
                      child: Image.asset('assets/images/Deck-branding1.png')),
                ),
-               SizedBox( height: 20),
+               const SizedBox( height: 20),
 
                const Text("AGREEMENT",
                    textAlign: TextAlign.start,
@@ -45,7 +45,7 @@ class TermsOfUsePage extends StatelessWidget {
                /// T E R M S  O  F  U S E
                ///
                /// 
-               Text("Terms of Use",
+               const Text("Terms of Use",
                    textAlign: TextAlign.start,
 
                    style: TextStyle(
@@ -55,8 +55,8 @@ class TermsOfUsePage extends StatelessWidget {
                  color: DeckColors.white,
                )
                  ),
-               SizedBox( height: 20),
-               Text("Welcome to Deck!",
+               const SizedBox( height: 20),
+               const Text("Welcome to Deck!",
                    style: TextStyle(
                      fontFamily: 'Fraiche',
                      fontSize: 20,
@@ -64,8 +64,8 @@ class TermsOfUsePage extends StatelessWidget {
                      color: DeckColors.white,
                    ),
                  ),
-               SizedBox(height: 20),
-               Text('These Terms of Use (Terms) govern your access to '
+               const SizedBox(height: 20),
+               const Text('These Terms of Use (Terms) govern your access to '
                        'and use of the Deck application ("Deck" or the "App"), '
                        'including any content, functionality, and services offered '
                        'on or through the App. By accessing or using Deck, you '
@@ -79,10 +79,10 @@ class TermsOfUsePage extends StatelessWidget {
                        color: DeckColors.white,
                      ),
                    ),
-               SizedBox(
+               const SizedBox(
                      height: 20,
                    ),
-               Text.rich(
+               const Text.rich(
                  TextSpan(
                    style: TextStyle(
                      fontFamily: 'nunito',
@@ -188,7 +188,7 @@ class TermsOfUsePage extends StatelessWidget {
                  ),
                    textAlign: TextAlign.justify
                ),
-               SizedBox(height:50),
+               const SizedBox(height:50),
 
 
              ],

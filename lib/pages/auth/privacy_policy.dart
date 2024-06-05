@@ -19,7 +19,7 @@ class PrivacyPolicyPage extends StatelessWidget {
       body: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.only(left: 30, right: 30),
+              padding: const EdgeInsets.only(left: 30, right: 30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -30,8 +30,8 @@ class PrivacyPolicyPage extends StatelessWidget {
                         width: MediaQuery.of(context).size.width,
                         child: Image.asset('assets/images/Deck-branding1.png')),
                   ),
-                  SizedBox( height: 20),
-                  Text("AGREEMENT",
+                  const SizedBox( height: 20),
+                  const Text("AGREEMENT",
                       style: TextStyle(
                         fontFamily: 'Fraiche',
                         fontSize: 16,
@@ -44,7 +44,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                   /// P R I V A C Y  P O L I C Y
                   ///
 
-                  Text("Privacy Policy",
+                  const Text("Privacy Policy",
                       style: TextStyle(
                         fontFamily: 'Fraiche',
                         fontSize: 24,
@@ -52,8 +52,8 @@ class PrivacyPolicyPage extends StatelessWidget {
                         color: DeckColors.white,
                       )
                   ),
-                  SizedBox( height: 10),
-                  Text('At Deck, we are committed to protecting your privacy. This '
+                  const SizedBox( height: 10),
+                  const Text('At Deck, we are committed to protecting your privacy. This '
                       'Privacy Policy describes how your personal information is collected, '
                       'used, and shared when you use the Deck application (the "App").',
                     textAlign: TextAlign.justify,
@@ -65,10 +65,10 @@ class PrivacyPolicyPage extends StatelessWidget {
                       color: DeckColors.white,
                     ),
                   ),
-                  SizedBox(
-                    height: 10,
+                  const SizedBox(
+                    height: 20,
                   ),
-                  Text.rich(
+                  const Text.rich(
                     TextSpan(
                       style: TextStyle(
                         fontFamily: 'nunito',
@@ -178,8 +178,8 @@ class PrivacyPolicyPage extends StatelessWidget {
 
 
                   ),
-                  SizedBox(height: 10),
-                  Text("By using the Deck App, you consent to the "
+                  const SizedBox(height: 10),
+                  const Text("By using the Deck App, you consent to the "
                       "collection and use of your personal information as described in this Privacy Policy. "
                       "Thank you for using Deck!",
                       textAlign: TextAlign.justify,
@@ -190,7 +190,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                         color: DeckColors.white,
                       )
                   ),
-                  SizedBox(height: 40),
+                  const SizedBox(height: 40),
 
                 ],
               ),

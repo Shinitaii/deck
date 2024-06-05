@@ -19,7 +19,6 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +38,7 @@ class _SignUpPageState extends State<SignUpPage> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Container(
-                    height: 450,
+                    height: 400,
                     width: MediaQuery.of(context).size.width,
                     color: defaultColorScheme.primary,
                     child: Image.asset('assets/images/Deck-Logo.png')),
@@ -49,9 +48,6 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               BuildButton(
                 onPressed: () async {
-                  ///loading dialog
-                  showLoad(context);
-
 
                     final authService = AuthService();
                     try {
@@ -75,14 +71,10 @@ class _SignUpPageState extends State<SignUpPage> {
                       Navigator.of(context).push(
                         RouteGenerator.createRoute(const AuthGate()),
                       );
-                      /// stop loading
-                      hideLoad(context);
-
 
                     } catch (e){
                       print(e.toString());
-                      /// stop loading
-                      hideLoad(context);
+
 
                       ///display error
                       showInformationDialog(context, "Error signing up", "A problem occured while signing up. Please try again.");
@@ -158,7 +150,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   children: [
                     const Text(
                       'Already have an Account? ',
-                      style: TextStyle(fontSize: 16.0),
+                      style: TextStyle(fontSize: 12.0),
                     ),
                     InkWell(
                       onTap: () {
@@ -174,7 +166,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         child: Text(
                           'Log In',
                           style: GoogleFonts.nunito(
-                            fontSize: 16,
+                            fontSize: 12,
                             fontWeight: FontWeight.w900,
                             color: DeckColors.white,
                           ),

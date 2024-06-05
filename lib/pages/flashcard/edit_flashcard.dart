@@ -121,17 +121,17 @@ class _EditFlashcardPageState extends State<EditFlashcardPage> {
                       showConfirmationDialog(
                         context,
                         "Save Changes",
-                        "Are you sure you want to save changes you made on this flashcard?",
+                        "Are you sure you want to save changes you made on this flash card?",
                             () async {
                           try {
                             if (_questionOrTermController.text.trim().isEmpty) {
                               await Future.delayed(const Duration(milliseconds: 300));
-                              showInformationDialog(context, "Input Error", "This card requires a term/question");
+                              showInformationDialog(context, "Input Error", "This flash card requires a term/question");
                               return;
                             }
                             if (_descriptionOrAnswerController.text.trim().isEmpty) {
                               await Future.delayed(const Duration(milliseconds: 300));
-                              showInformationDialog(context, "Input Error", "This card requires a description/answer");
+                              showInformationDialog(context, "Input Error", "This flash card requires a description/answer");
                               return;
                             }
                             if (widget.card.question.toString().trim() != _questionOrTermController.text.toString().trim()) {
@@ -147,12 +147,14 @@ class _EditFlashcardPageState extends State<EditFlashcardPage> {
                               );
                             }
                             await Future.delayed(const Duration(milliseconds: 300));
-                            showInformationDialog(context, "Card Edit Successful", "Card info changed");
+                            showInformationDialog(context, "Changed flash card information!", "Successfully changed flash card information.");
                             setState(() {
                               buttonsEnabled = !buttonsEnabled;
                             });
                           } catch (e) {
                             print('Error saving changes $e');
+                            showInformationDialog(context, "Unknown Error Occurred",
+                                'An unknown error has occurred while editing flash card. Please try again.');
                           }
                         },
                           () {

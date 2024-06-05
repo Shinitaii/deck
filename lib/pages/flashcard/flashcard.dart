@@ -43,7 +43,8 @@ class _FlashcardPageState extends State<FlashcardPage> {
   void _initUserDecks(User? user) async {
     if (user != null) {
       String userId = user.uid;
-      List<Deck> decks = await _flashcardService.getDecksByUserId(userId); // Call method to fetch decks
+      List<Deck> decks = await _flashcardService
+          .getDecksByUserId(userId); // Call method to fetch decks
       Deck? latest = await _flashcardService.getLatestDeckLog(userId);
       if (!mounted) return;
       setState(() {
@@ -59,7 +60,7 @@ class _FlashcardPageState extends State<FlashcardPage> {
       _searchQuery = _searchController.text;
       _filteredDecks = _decks
           .where((deck) =>
-          deck.title.toLowerCase().contains(_searchQuery.toLowerCase()))
+              deck.title.toLowerCase().contains(_searchQuery.toLowerCase()))
           .toList();
     });
   }
@@ -93,7 +94,9 @@ class _FlashcardPageState extends State<FlashcardPage> {
                 String userId = _user!.uid.toString();
                 await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AddDeckPage(decks: _decks, userId: userId)),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          AddDeckPage(decks: _decks, userId: userId)),
                 );
                 _onSearchChanged();
               } catch (e) {
@@ -104,7 +107,7 @@ class _FlashcardPageState extends State<FlashcardPage> {
         ),
       ),
       appBar: const DeckBar(
-        title: 'Flash Card',
+        title: 'flash card',
         color: DeckColors.white,
         fontSize: 24,
       ),
@@ -150,11 +153,9 @@ class _FlashcardPageState extends State<FlashcardPage> {
                         child: BuildButton(
                           onPressed: () {
                             print("Continue Learning Button Clicked");
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      ViewDeckPage(deck: _latestDeck!)),
+                            Navigator.of(context).push(
+                              RouteGenerator.createRoute(
+                                  ViewDeckPage(deck: _latestDeck!)),
                             );
                           },
                           buttonText: 'Continue Learning',
@@ -175,7 +176,8 @@ class _FlashcardPageState extends State<FlashcardPage> {
             if (_decks.isEmpty)
               ifCollectionEmpty(
                   ifCollectionEmptyText: 'No Deck(s) Available',
-                  ifCollectionEmptyheight: MediaQuery.of(context).size.height*0.7),
+                  ifCollectionEmptyheight:
+                      MediaQuery.of(context).size.height * 0.7),
             if (_decks.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(top: 20.0),
@@ -214,35 +216,40 @@ class _FlashcardPageState extends State<FlashcardPage> {
                         titleOfDeck: _filteredDecks[index].title,
                         onDelete: () {
                           Deck removedDeck = _filteredDecks[index];
-                          final String deletedTitle = removedDeck.title.toString();
+                          final String deletedTitle =
+                              removedDeck.title.toString();
                           setState(() {
                             _filteredDecks.removeAt(index);
-                            _decks.removeWhere((card) => card.deckId == removedDeck.deckId);
+                            _decks.removeWhere(
+                                (card) => card.deckId == removedDeck.deckId);
                           });
                           showConfirmationDialog(
                             context,
                             "Delete Item",
                             "Are you sure you want to delete '$deletedTitle'?",
-                                () async {
-                                  try {
-                                    if (await removedDeck.updateDeleteStatus(true)) {
-                                      if (_latestDeck != null) {
-                                        if (_latestDeck?.deckId == removedDeck.deckId) {
-                                          Deck? latest = await _flashcardService.getLatestDeckLog(_user!.uid);
-                                          setState(() {
-                                            _latestDeck = latest;
-                                          });
-                                        }
-                                      }
+                            () async {
+                              try {
+                                if (await removedDeck
+                                    .updateDeleteStatus(true)) {
+                                  if (_latestDeck != null) {
+                                    if (_latestDeck?.deckId ==
+                                        removedDeck.deckId) {
+                                      Deck? latest = await _flashcardService
+                                          .getLatestDeckLog(_user!.uid);
+                                      setState(() {
+                                        _latestDeck = latest;
+                                      });
                                     }
-                                  } catch (e) {
-                                    print('Flash Card Page Deletion Error: $e');
-                                    setState(() {
-                                      _decks.insert(index, removedDeck);
-                                    });
                                   }
-                                },
-                                () {
+                                }
+                              } catch (e) {
+                                print('Flash Card Page Deletion Error: $e');
+                                setState(() {
+                                  _decks.insert(index, removedDeck);
+                                });
+                              }
+                            },
+                            () {
                               setState(() {
                                 _decks.insert(index, removedDeck);
                               });
@@ -252,11 +259,9 @@ class _FlashcardPageState extends State<FlashcardPage> {
                         enableSwipeToRetrieve: false,
                         onTap: () {
                           print("Clicked");
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    ViewDeckPage(deck: _filteredDecks[index])),
+                          Navigator.of(context).push(
+                            RouteGenerator.createRoute(
+                                ViewDeckPage(deck: _filteredDecks[index])),
                           );
                         },
                       ),
@@ -264,16 +269,20 @@ class _FlashcardPageState extends State<FlashcardPage> {
                   },
                 ),
               ),
-            if(_decks.isNotEmpty && _filteredDecks.isEmpty)ifCollectionEmpty(
-              ifCollectionEmptyText: 'No Results Found',
-              ifCollectionEmptySubText: 'Try adjusting your search to \nfind what your looking for.',
-              ifCollectionEmptyheight:  MediaQuery.of(context).size.height * 0.4,
-            ),
+            if (_decks.isNotEmpty && _filteredDecks.isEmpty)
+              ifCollectionEmpty(
+                ifCollectionEmptyText: 'No Results Found',
+                ifCollectionEmptySubText:
+                    'Try adjusting your search to \nfind what your looking for.',
+                ifCollectionEmptyheight:
+                    MediaQuery.of(context).size.height * 0.4,
+              ),
           ],
         ),
       ),
     );
   }
+
   @override
   void dispose() {
     _searchController.removeListener(_onSearchChanged);

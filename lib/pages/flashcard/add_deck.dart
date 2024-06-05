@@ -42,7 +42,7 @@ class _AddDeckPageState extends State<AddDeckPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const DeckBar(
-        title: 'Add Deck',
+        title: 'add deck',
         color: DeckColors.white,
         fontSize: 24,
       ),
@@ -113,28 +113,32 @@ class _AddDeckPageState extends State<AddDeckPage> {
                                               }
                                             } catch (e) {
                                               print('Error: $e');
-                                              showDialog(
-                                                context: context,
-                                                builder: (BuildContext context) {
-                                                  return AlertDialog(
-                                                    title: const Text('File Selection Error'),
-                                                    content: const Text('There was an error in selecting the file. Please try again.'),
-                                                    actions: <Widget>[
-                                                      TextButton(
-                                                        onPressed: () {
-                                                          Navigator.of(context).pop(); // Close the dialog
-                                                        },
-                                                        child: const Text(
-                                                          'Close',
-                                                          style: TextStyle(
-                                                            color: Colors.red,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              );
+                                              showInformationDialog(
+                                                  context,
+                                                  "Error in selecting files",
+                                                  "There was an error in selecting the file. Please try again.");
+                                              // showDialog(
+                                              //   context: context,
+                                              //   builder: (BuildContext context) {
+                                              //     return AlertDialog(
+                                              //       title: const Text('File Selection Error'),
+                                              //       content: const Text('There was an error in selecting the file. Please try again.'),
+                                              //       actions: <Widget>[
+                                              //         TextButton(
+                                              //           onPressed: () {
+                                              //             Navigator.of(context).pop(); // Close the dialog
+                                              //           },
+                                              //           child: const Text(
+                                              //             'Close',
+                                              //             style: TextStyle(
+                                              //               color: Colors.red,
+                                              //             ),
+                                              //           ),
+                                              //         ),
+                                              //       ],
+                                              //     );
+                                              //   },
+                                              // );
                                             }
                                           },
                                         ),
@@ -237,28 +241,30 @@ class _AddDeckPageState extends State<AddDeckPage> {
                             }
                           } catch (e) {
                             print('Error: $e');
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text('File Selection Error'),
-                                  content: const Text('There was an error in selecting the file. Please try again.'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop(); // Close the dialog
-                                      },
-                                      child: const Text(
-                                        'Close',
-                                        style: TextStyle(
-                                          color: Colors.red,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
+                            showInformationDialog(context, 'Error in selecting files!', 'There was an error in selecting the file. Please try again.');
+
+                            // showDialog(
+                            //   context: context,
+                            //   builder: (BuildContext context) {
+                            //     return AlertDialog(
+                            //       title: const Text('File Selection Error'),
+                            //       content: const Text('There was an error in selecting the file. Please try again.'),
+                            //       actions: <Widget>[
+                            //         TextButton(
+                            //           onPressed: () {
+                            //             Navigator.of(context).pop(); // Close the dialog
+                            //           },
+                            //           child: const Text(
+                            //             'Close',
+                            //             style: TextStyle(
+                            //               color: Colors.red,
+                            //             ),
+                            //           ),
+                            //         ),
+                            //       ],
+                            //     );
+                            //   },
+                            // );
                           }
 
                         },
@@ -301,20 +307,20 @@ class _AddDeckPageState extends State<AddDeckPage> {
                         // Check if there is a title
                         if(_deckTitleController.text.trim().isEmpty && _numCardsController.text.trim().isNotEmpty){
                           await Future.delayed(const Duration(milliseconds: 300));
-                          showInformationDialog(context, "Input Error", "Your deck requires a title");
+                          showInformationDialog(context, "Error adding Deck", "Your deck requires a title");
                           return;
                         }
                         //Check if the number of cards to be generate was given
                         if(_numCardsController.text.trim().isEmpty){
                           await Future.delayed(const Duration(milliseconds: 300));
-                          showInformationDialog(context, "Input Error", "The AI needs to know how many cards to generate");
+                          showInformationDialog(context, "Error adding Deck", "The AI needs to know how many cards to generate");
                           return;
                         }else{
                           int? numberOfCards = int.tryParse(_numCardsController.text);
                           // Check if the number of cards is valid
                           if (numberOfCards == null || (numberOfCards < 0 && numberOfCards > 20)) {
                             await Future.delayed(const Duration(milliseconds: 300));
-                            showInformationDialog(context, "Input Error", "Please enter a valid integer ranging from 2-20");
+                            showInformationDialog(context,"Error adding Deck", "Please enter a valid integer ranging from 2-20");
                             return;
                           }
                         }
@@ -365,65 +371,28 @@ class _AddDeckPageState extends State<AddDeckPage> {
                             );
 
                           }on ApiException catch(e){
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text('Input Error'),
-                                  content: Text(e.message.toString()),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop(); // Close the dialog
-                                      },
-                                      child: const Text(
-                                        'Close',
-                                        style: TextStyle(
-                                          color: Colors.red,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
+                            showInformationDialog(context, "Error while creating Deck!", e.message.toString()
                             );
                             return;
                           }catch(e){
                             await Future.delayed(const Duration(milliseconds: 300));
                             showInformationDialog(context, "Unknown Error Occurred",
-                                'An unknown error has occurred while generating your deck please try again later');
+                                'An unknown error has occurred while generating your deck. Please try again.');
                             return;
                           }
 
                           if (flashCardDataList.isEmpty) {
                             await Future.delayed(const Duration(milliseconds: 300));
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text('AI Did Not Give A Response'),
-                                  content: const Text('This usually happens if\n'
-                                      '1.) The subject, topic, or description given is inappropriate\n'
-                                      '2.) The request is not related to academics\n'
-                                      '3.) The uploaded file is a ppt converted to pdf\n'
-                                      '4.) There was a internet connection error\n'
-                                      '\nPlease check your input and try again'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop(); // Close the dialog
-                                      },
-                                      child: const Text(
-                                        'Close',
-                                        style: TextStyle(
-                                          color: Colors.red,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
+                            showInformationDialog(
+                                context,
+                                "AI Did Not Give A Response!",
+                                'This usually happens if\n'
+                                '1.) The subject, topic, or description given is inappropriate\n'
+                                '2.) The request is not related to academics\n'
+                                '3.) The uploaded file is a ppt converted to pdf\n'
+                                '4.) There was a internet connection error\n'
+                                '\nPlease check your input and try again' );
+
                           } else {
                             // If sendData is successful, navigate to ViewDeckPage
                             if(_deckTitleController.text.isNotEmpty){
@@ -456,42 +425,48 @@ class _AddDeckPageState extends State<AddDeckPage> {
                               }
                             }else{
                               await Future.delayed(const Duration(milliseconds: 300)); // Ensure the dialog is fully closed
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Text('Input Error'),
-                                    content: const Text('Please fill out all of the input fields.'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop(); // Close the dialog
-                                        },
-                                        child: const Text(
-                                          'Close',
-                                          style: TextStyle(
-                                            color: Colors.red,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
+                              showInformationDialog(
+                                  context,
+                                  'Input Error',
+                                  'Please fill out all of the input fields and try again.');
+                              // showDialog(
+                              //   context: context,
+                              //   builder: (BuildContext context) {
+                              //     return AlertDialog(
+                              //       title: const Text('Input Error'),
+                              //       content: const Text('Please fill out all of the input fields.'),
+                              //       actions: <Widget>[
+                              //         TextButton(
+                              //           onPressed: () {
+                              //             Navigator.of(context).pop(); // Close the dialog
+                              //           },
+                              //           child: const Text(
+                              //             'Close',
+                              //             style: TextStyle(
+                              //               color: Colors.red,
+                              //             ),
+                              //           ),
+                              //         ),
+                              //       ],
+                              //     );
+                              //   },
+                              // );
                             }
                           }
                         } catch (e) {
                           // Handle any errors that occur during sendData
                           print('Error: $e');
-                          // Optionally, you can show a snackbar or dialog to inform the user about the error
-                        }
+                          showInformationDialog(
+                              context,
+                              "An error occured",
+                              "Please fill out all of the input fields and try again.");                        }
                         // END OF AI
                       }else{
                         // START OF NON AI
                         // Check if title is empty
                         if(_deckTitleController.text.trim().isEmpty) {
                           await Future.delayed(const Duration(milliseconds: 300));
-                          showInformationDialog(context, "Input Error", "Your deck requires a title");
+                          showInformationDialog(context, "Error adding Deck", "Your deck requires a title");
                           return;
                         }
 
@@ -508,7 +483,7 @@ class _AddDeckPageState extends State<AddDeckPage> {
                             deckTitle
                         )){
                           await Future.delayed(const Duration(milliseconds: 300));
-                          showInformationDialog(context, "Title Already Exist", 'You already have a deck named $deckTitle');
+                          showInformationDialog(context, "Error adding Deck!", 'You already have a deck named $deckTitle');
                           return;
                         }
 
@@ -533,7 +508,7 @@ class _AddDeckPageState extends State<AddDeckPage> {
                         }else{
                           // Tell user if the deck is null because deck was not added
                           await Future.delayed(const Duration(milliseconds: 300));
-                          showInformationDialog(context, "An Error Occured", "Deck was not added please try again");
+                          showInformationDialog(context, "Error adding Deck", "Deck was not added please try again");
                           return;
                         }
                       }

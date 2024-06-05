@@ -19,7 +19,7 @@ class NotificationService {
           'name',
           channelDescription: 'desc',
           importance: Importance.max,
-          icon: '@drawable/deck_branding_hat_only',
+          icon: '@drawable/deck_hat_green',
       ),
     );
   }

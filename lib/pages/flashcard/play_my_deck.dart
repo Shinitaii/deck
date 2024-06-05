@@ -31,7 +31,7 @@ class _PlayMyDeckPageState extends State<PlayMyDeckPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const DeckBar(
-        title: 'Play My Deck',
+        title: 'play my deck',
         color: DeckColors.white,
         fontSize: 24,
       ),

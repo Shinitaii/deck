@@ -33,8 +33,9 @@ class _TaskPageState extends State<TaskPage> {
       showAllTask = !showAllTask;
     });
   }
-  void _getTasks() async{
-    await Provider.of<TaskProvider>(context, listen:false).loadTasks();
+
+  void _getTasks() async {
+    await Provider.of<TaskProvider>(context, listen: false).loadTasks();
   }
 
   void _onDaySelected(DateTime day, DateTime focusedDay) {
@@ -56,7 +57,8 @@ class _TaskPageState extends State<TaskPage> {
 
     //check if there is task for the day
     bool isThereTaskForDay(DateTime selectedDay, bool isToDo) {
-      List<Task> tasksForSelectedDay = tasks.where((task) => isSameDay(task.deadline, selectedDay)).toList();
+      List<Task> tasksForSelectedDay =
+          tasks.where((task) => isSameDay(task.deadline, selectedDay)).toList();
 
       if (isToDo) {
         return tasksForSelectedDay.any((task) => !task.isDone);
@@ -66,7 +68,9 @@ class _TaskPageState extends State<TaskPage> {
     }
 
     List<Task> _eventLoader(DateTime day) {
-      return tasks.where((task) => !task.isDone && isSameDay(task.deadline, day)).toList();
+      return tasks
+          .where((task) => !task.isDone && isSameDay(task.deadline, day))
+          .toList();
     }
 
     return Scaffold(
@@ -95,8 +99,10 @@ class _TaskPageState extends State<TaskPage> {
         child: CustomScrollView(
           slivers: <Widget>[
             DeckSliverHeader(
-              backgroundColor: Colors.pinkAccent ,
-              headerTitle: showAllTask? "All Task" : DateFormat('EEEE, MMMM dd').format(selectedDay),
+              backgroundColor: Colors.transparent,
+              headerTitle: showAllTask
+                  ? "All Task"
+                  : DateFormat('EEEE, MMMM dd').format(selectedDay),
               textStyle: const TextStyle(
                 color: DeckColors.primaryColor,
                 fontFamily: 'Fraiche',
@@ -108,87 +114,87 @@ class _TaskPageState extends State<TaskPage> {
               onPressed: _toggleView,
               icon: showAllTask ? Icons.calendar_today : Icons.list,
             ),
-            if(!showAllTask) SliverList(
-                delegate: SliverChildListDelegate([
-              TableCalendar(
-                eventLoader: _eventLoader,
-                focusedDay: today,
-                firstDay: DateTime.utc(2020, 1, 1),
-                lastDay: DateTime.utc(DateTime.now().year + 5, 1, 1),
-                onDaySelected: _onDaySelected,
-                selectedDayPredicate: (day) => isSameDay(day, today),
-                rowHeight: 40,
-                daysOfWeekHeight: 40,
-                calendarStyle:  CalendarStyle(
-                  canMarkersOverflow: false,
-                  markersMaxCount:1,
-                  markerDecoration: const BoxDecoration(color: Colors.pinkAccent, shape: BoxShape.rectangle ),
-                  defaultTextStyle: const TextStyle(
-                    color: DeckColors.white,
-                    fontFamily: 'nunito',
-                    fontSize: 16,
-                  ),
-                  weekNumberTextStyle:const TextStyle(
-                    color: DeckColors.white,
-                    fontFamily: 'nunito',
-                    fontSize: 16,
-                  ),
-                  weekendTextStyle: const TextStyle(
-                    color: DeckColors.white,
-                    fontFamily: 'nunito',
-                    fontSize: 16,
-                  ),
-
-                  selectedDecoration: BoxDecoration(
-                    color: DeckColors.primaryColor,
-                    border: Border.all(
-                      color: DeckColors.primaryColor,
-                      width: 2,
+            if (!showAllTask)
+              SliverList(
+                  delegate: SliverChildListDelegate([
+                TableCalendar(
+                  eventLoader: _eventLoader,
+                  focusedDay: today,
+                  firstDay: DateTime.utc(2020, 1, 1),
+                  lastDay: DateTime.utc(DateTime.now().year + 5, 1, 1),
+                  onDaySelected: _onDaySelected,
+                  selectedDayPredicate: (day) => isSameDay(day, today),
+                  rowHeight: 40,
+                  daysOfWeekHeight: 40,
+                  calendarStyle: CalendarStyle(
+                    canMarkersOverflow: false,
+                    markersMaxCount: 1,
+                    markerDecoration: const BoxDecoration(
+                        color: Colors.transparent, shape: BoxShape.rectangle),
+                    defaultTextStyle: const TextStyle(
+                      color: DeckColors.white,
+                      fontFamily: 'nunito',
+                      fontSize: 16,
                     ),
-                    shape: BoxShape.circle,
+                    weekNumberTextStyle: const TextStyle(
+                      color: DeckColors.white,
+                      fontFamily: 'nunito',
+                      fontSize: 16,
+                    ),
+                    weekendTextStyle: const TextStyle(
+                      color: DeckColors.white,
+                      fontFamily: 'nunito',
+                      fontSize: 16,
+                    ),
+                    selectedDecoration: BoxDecoration(
+                      color: DeckColors.primaryColor,
+                      border: Border.all(
+                        color: DeckColors.primaryColor,
+                        width: 2,
+                      ),
+                      shape: BoxShape.circle,
+                    ),
+                    todayDecoration: const BoxDecoration(
+                      color: Colors.transparent,
+                      shape: BoxShape.circle,
+                    ),
+                    outsideDaysVisible: true,
+                    outsideTextStyle: const TextStyle(
+                      color: DeckColors.white,
+                      fontFamily: 'nunito',
+                      fontSize: 16,
+                    ),
                   ),
-
-                  todayDecoration:const BoxDecoration(
-                    color: Colors.transparent,
-                    shape: BoxShape.circle,
+                  headerStyle: const HeaderStyle(
+                    leftChevronIcon: Icon(Icons.arrow_back_ios_rounded,
+                        color: DeckColors.white),
+                    leftChevronMargin: EdgeInsets.only(right: 10),
+                    leftChevronPadding: EdgeInsets.all(10),
+                    rightChevronIcon: Icon(Icons.arrow_forward_ios_rounded,
+                        color: DeckColors.white),
+                    rightChevronPadding: EdgeInsets.all(10),
+                    rightChevronMargin: EdgeInsets.zero,
+                    formatButtonVisible: false,
+                    titleTextStyle: TextStyle(
+                      color: DeckColors.white,
+                      fontSize: 28,
+                      fontFamily: 'Fraiche',
+                    ),
                   ),
-                  outsideDaysVisible: true,
-                  outsideTextStyle: const TextStyle(
-                    color: DeckColors.white,
-                    fontFamily: 'nunito',
-                    fontSize: 16,
+                  daysOfWeekStyle: const DaysOfWeekStyle(
+                    weekdayStyle: TextStyle(
+                      color: DeckColors.primaryColor,
+                      fontSize: 20,
+                      fontFamily: 'Fraiche',
+                    ),
+                    weekendStyle: TextStyle(
+                      color: DeckColors.white,
+                      fontSize: 20,
+                      fontFamily: 'Fraiche',
+                    ),
                   ),
-                ),
-                headerStyle: const HeaderStyle(
-                  leftChevronIcon:
-                      Icon( Icons.arrow_back_ios_rounded, color: DeckColors.white),
-                  leftChevronMargin: EdgeInsets.zero,
-                  leftChevronPadding: EdgeInsets.only(right: 15),
-                  rightChevronIcon: Icon(Icons.arrow_forward_ios_rounded,
-                      color: DeckColors.white),
-                  rightChevronPadding: EdgeInsets.only(left: 15),
-                  rightChevronMargin: EdgeInsets.symmetric(horizontal: 40),
-                  formatButtonVisible: false,
-                  titleTextStyle: TextStyle(
-                    color: DeckColors.white,
-                    fontSize: 28,
-                    fontFamily: 'Fraiche',
-                  ),
-                ),
-                daysOfWeekStyle: const DaysOfWeekStyle(
-                  weekdayStyle: TextStyle(
-                    color: DeckColors.primaryColor,
-                    fontSize: 16,
-                    fontFamily: 'nunito',
-                  ),
-                  weekendStyle: TextStyle(
-                    color: DeckColors.white,
-                    fontSize: 16,
-                    fontFamily: 'nunito',
-                  ),
-                ),
-                calendarBuilders: CalendarBuilders(
-                  markerBuilder: (context, date, events) {
+                  calendarBuilders:
+                      CalendarBuilders(markerBuilder: (context, date, events) {
                     if (events.isNotEmpty) {
                       return Align(
                         alignment: Alignment.bottomCenter,
@@ -196,15 +202,13 @@ class _TaskPageState extends State<TaskPage> {
                           margin: const EdgeInsets.only(bottom: 8),
                           width: 5,
                           height: 2,
-                          color:DeckColors.primaryColor,
+                          color: DeckColors.primaryColor,
                         ),
                       );
                     }
-                  }
-                ),
-              )
-            ])
-            ),
+                  }),
+                )
+              ])),
             SliverFillRemaining(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
@@ -213,83 +217,138 @@ class _TaskPageState extends State<TaskPage> {
                   length: 2,
                   tabContent: [
                     // To Do Tab
-                    if (isThereTaskForDay(today,true) || showAllTask)
+                    if (isThereTaskForDay(today, true) || showAllTask)
                       ListView.builder(
                         shrinkWrap:
-                        true, // Allow the ListView to wrap its content
+                            true, // Allow the ListView to wrap its content
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: tasks.length,
                         itemBuilder: (context, index) {
-                          if ((showAllTask && !tasks[index].getIsDone) || (!tasks[index].getIsDone && isSameDay(tasks[index].deadline, selectedDay))) {
+                          if ((showAllTask && !tasks[index].getIsDone) ||
+                              (!tasks[index].getIsDone &&
+                                  isSameDay(
+                                      tasks[index].deadline, selectedDay))) {
                             return Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: DeckTaskTile(
                                 title: tasks[index].title,
-                                deadline: tasks[index].deadline.toString().split(" ")[0],
+                                deadline: tasks[index]
+                                    .deadline
+                                    .toString()
+                                    .split(" ")[0],
                                 isChecked: tasks[index].getIsDone,
                                 onChanged: (newValue) {
                                   setState(() {
                                     tasks[index].setIsDone = newValue ?? false;
-                                    Provider.of<TaskProvider>(context, listen: false).setTaskDone(tasks[index]);
-                                  }); },
+                                    Provider.of<TaskProvider>(context,
+                                            listen: false)
+                                        .setTaskDone(tasks[index]);
+                                  });
+                                },
                                 onDelete: () {
-                                  final String deletedTitle = tasks[index].title;
-                                  showConfirmationDialog(context, "Delete Item", "Are you sure you want to delete '$deletedTitle'?",
-                                        () { Provider.of<TaskProvider>(context, listen: false).deleteTask(tasks[index].uid); },
-                                        () { setState(() {}); },
+                                  final String deletedTitle =
+                                      tasks[index].title;
+                                  showConfirmationDialog(
+                                    context,
+                                    "Delete Item",
+                                    "Are you sure you want to delete '$deletedTitle'?",
+                                    () {
+                                      Provider.of<TaskProvider>(context,
+                                              listen: false)
+                                          .deleteTask(tasks[index].uid);
+                                    },
+                                    () {
+                                      setState(() {});
+                                    },
                                   );
                                 },
                                 enableRetrieve: false,
                                 onTap: () {
                                   print("Clicked task tile!");
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ViewTaskPage(task: tasks[index], isEditable: true,)),);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ViewTaskPage(
+                                              task: tasks[index],
+                                              isEditable: true,
+                                            )),
+                                  );
                                 },
                               ),
                             );
                           } else {
-                            return const SizedBox(height: 0); // do not remove. tasks will not show up.
+                            return const SizedBox(
+                                height:
+                                    0); // do not remove. tasks will not show up.
                           }
                         },
                       )
                     else
                       ifCollectionEmpty(
-                      ifCollectionEmptyText: 'No new task',
-                      ifCollectionEmptySubText: 'To create another Task, \nsimply Click the "+" button  ',
-                      ifCollectionEmptyheight:
-                      MediaQuery.of(context).size.height * 0.1,
-                    ),
+                        ifCollectionEmptyText: 'No new task',
+                        ifCollectionEmptySubText:
+                            'To create another Task, \nsimply Click the "+" button  ',
+                        ifCollectionEmptyheight:
+                            MediaQuery.of(context).size.height * 0.1,
+                      ),
 
                     // Done Tab
-                    if (isThereTaskForDay(today,false) || showAllTask)
+                    if (isThereTaskForDay(today, false) || showAllTask)
                       ListView.builder(
                         shrinkWrap:
-                        true, // Allow the ListView to wrap its content
+                            true, // Allow the ListView to wrap its content
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: tasks.length,
                         itemBuilder: (context, index) {
-                          if ((showAllTask && tasks[index].getIsDone) || (tasks[index].getIsDone && isSameDay(tasks[index].deadline, selectedDay))) {
+                          if ((showAllTask && tasks[index].getIsDone) ||
+                              (tasks[index].getIsDone &&
+                                  isSameDay(
+                                      tasks[index].deadline, selectedDay))) {
                             return Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: DeckTaskTile(
                                 title: tasks[index].title,
-                                deadline: tasks[index].deadline.toString().split(" ")[0],
+                                deadline: tasks[index]
+                                    .deadline
+                                    .toString()
+                                    .split(" ")[0],
                                 isChecked: tasks[index].getIsDone,
                                 onChanged: (newValue) {
                                   setState(() {
                                     tasks[index].setIsDone = newValue ?? false;
-                                    Provider.of<TaskProvider>(context, listen: false).setTaskUndone(tasks[index]);
-                                  }); },
+                                    Provider.of<TaskProvider>(context,
+                                            listen: false)
+                                        .setTaskUndone(tasks[index]);
+                                  });
+                                },
                                 onDelete: () {
-                                  final String deletedTitle = tasks[index].title;
-                                  showConfirmationDialog(context, "Delete Item", "Are you sure you want to delete '$deletedTitle'?",
-                                        () { Provider.of<TaskProvider>(context, listen: false).deleteTask(tasks[index].uid);},
-                                        () { setState(() {});},
+                                  final String deletedTitle =
+                                      tasks[index].title;
+                                  showConfirmationDialog(
+                                    context,
+                                    "Delete Item",
+                                    "Are you sure you want to delete '$deletedTitle'?",
+                                    () {
+                                      Provider.of<TaskProvider>(context,
+                                              listen: false)
+                                          .deleteTask(tasks[index].uid);
+                                    },
+                                    () {
+                                      setState(() {});
+                                    },
                                   );
                                 },
                                 enableRetrieve: false,
                                 onTap: () {
                                   print("Clicked task tile!");
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ViewTaskPage(task: tasks[index], isEditable: true,)),);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ViewTaskPage(
+                                              task: tasks[index],
+                                              isEditable: true,
+                                            )),
+                                  );
                                 },
                               ),
                             );
@@ -301,10 +360,10 @@ class _TaskPageState extends State<TaskPage> {
                       )
                     else
                       ifCollectionEmpty(
-                      ifCollectionEmptyText: 'No new task',
-                      ifCollectionEmptyheight:
-                      MediaQuery.of(context).size.height * 0.1,
-                    )
+                        ifCollectionEmptyText: 'No new task',
+                        ifCollectionEmptyheight:
+                            MediaQuery.of(context).size.height * 0.1,
+                      )
                   ],
                 ),
               ),

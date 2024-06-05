@@ -15,8 +15,8 @@ class RecoverAccountPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const AuthBar(
-        automaticallyImplyLeading: false,
-        title: 'recover acc',
+        automaticallyImplyLeading: true,
+        title: 'recover account',
         color: DeckColors.white,
         fontSize: 24,
       ),
@@ -28,10 +28,17 @@ class RecoverAccountPage extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.only(top: 30),
                 child: Text(
-                    'nakalimutan mo email mo kaya ka andito bonak ka haha'),
+                    'Please enter the email address associated with your account. '
+                        'We will send you instructions on how to reset your password.',
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(
+                    fontFamily: 'nunito',
+                    fontSize: 16
+                  ),
+                ),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 30),
+                padding: const EdgeInsets.only(top: 30),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -61,26 +68,27 @@ class RecoverAccountPage extends StatelessWidget {
                 onPressed: () async {
                   try {
                     await AuthService().sendResetPass(emailController.text).then((_) => {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Success! Please check your email'))),
-                      Navigator.of(context).pop(RouteGenerator.createRoute(LoginPage()),)
+                    showInformationDialog(context, "Success!", "Process was a success. Please check your email."),
+                    Navigator.of(context).pop(RouteGenerator.createRoute(LoginPage()),)
                     });
                   } on FirebaseAuthException catch (e) {
                     print(e.toString());
                     String message = '';
                     if(e.code == 'invalid-email'){
-                      message = 'Invalid email format!';
+                      message = 'You have entered an invalid email format! Please try again.';
                     } else if (e.code == 'user-not-found'){
-                      message = 'User not found!';
+                      message = 'User is not found! Please try again.';
                     } else {
-                      message = 'Error finding email!';
+                      message = 'There was an error finding email! Please try again';
                     }
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+                    showInformationDialog(context, "Error while trying to recover account", message);
+
                   } catch (e){
                     print(e.toString());
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Something is wrong!')));
+                    showInformationDialog(context, "Error while trying to recover account", "An unknown error occured while performing process. Please try again");
                   }
                 },
-                buttonText: 'Enter Email',
+                buttonText: 'Recover Account',
                 height: 60,
                 width: MediaQuery.of(context).size.width,
                 radius: 10,

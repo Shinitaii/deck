@@ -22,8 +22,20 @@ class TextExtractionException extends ApiException {
   TextExtractionException(String message) : super(421, message);
 }
 
-class FileDeletionError extends ApiException {
-  FileDeletionError(String message) : super(422, message);
+class FileDeletionException extends ApiException {
+  FileDeletionException(String message) : super(422, message);
+}
+
+class NoInformationException extends ApiException {
+  NoInformationException(String message) : super(423, message);
+}
+
+class MessageRouteException extends ApiException {
+  MessageRouteException(String message) : super(424, message);
+}
+
+class RequestException extends ApiException {
+  RequestException(String message) : super(425, message);
 }
 
 class InternalServerErrorException extends ApiException {

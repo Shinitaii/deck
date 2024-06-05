@@ -27,7 +27,6 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
   final DeckBox checkBox = DeckBox();
-  bool isLoading = false;
 
   String getAdjective(){
 
@@ -146,7 +145,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                     ),
                     const Text(
                       "I accept Deck's",
-                      style: TextStyle(fontSize: 16.0),
+                      style: TextStyle(fontSize: 12.0),
                     ),
                     InkWell(
                       onTap: () {
@@ -162,7 +161,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                         child: Text(
                           'Terms of Use',
                           style: GoogleFonts.nunito(
-                            fontSize: 16,
+                            fontSize: 12,
                             fontWeight: FontWeight.w900,
                             color: DeckColors.white,
                           ),
@@ -171,7 +170,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                     ),
                     const Text(
                       "and",
-                      style: TextStyle(fontSize: 16.0),
+                      style: TextStyle(fontSize: 12.0),
                     ),
                     InkWell(
                       onTap: () {
@@ -187,7 +186,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                         child: Text(
                           'Privacy Policy',
                           style: GoogleFonts.nunito(
-                            fontSize: 16,
+                            fontSize: 12,
                             fontWeight: FontWeight.w900,
                             color: DeckColors.white,
                           ),
@@ -201,11 +200,9 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 padding: const EdgeInsets.only(top: 30),
                 child: BuildButton(
                   onPressed: () async {
-                    ///loading dialog
-                    showLoad(context);
+
                     if(!checkBox.isChecked){
-                      /// stop loading
-                      hideLoad(context);
+
                       ///display error
                       showInformationDialog(context, "Error Signing Up","You haven't agreed to the Terms of Use and Privacy Policy. Please try again");
 
@@ -213,8 +210,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                     }
 
                     if(passwordController.text != confirmPasswordController.text) {
-                      /// stop loading
-                      hideLoad(context);
+
                       ///display error
                       showInformationDialog(context, "Error Signing Up","Passwords do not match! Please try again.");
 
@@ -254,13 +250,11 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                       } else {
                         message = "Unknown Error! Please try again.";
                       }
-                      /// stop loading
-                      hideLoad(context);
+
                       showInformationDialog(context, "Error creating your account!",message);
                     } catch (e) {
                       print(e.toString());
-                      /// stop loading
-                      hideLoad(context);
+
                       showInformationDialog(context, "Error creating your account!", "Unknown Error! Please try again.");
                     }
 

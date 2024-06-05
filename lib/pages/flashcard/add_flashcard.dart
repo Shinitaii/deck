@@ -84,31 +84,39 @@ class _AddFlashcardPageState extends State<AddFlashcardPage> {
                           } else {
                             //Navigator.of(context).pop(); // Close the confirmation dialog
                             await Future.delayed(Duration(milliseconds: 300)); // Ensure the dialog is fully closed
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text('Input Error'),
-                                  content: const Text('Please fill out all of the input fields.'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop(); // Close the dialog
-                                      },
-                                      child: const Text(
-                                        'Close',
-                                        style: TextStyle(
-                                          color: Colors.red,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
+                            showInformationDialog(
+                                context,
+                                "Input Error",
+                                "Please fill out all of the input fields and try again.");
+                        // showDialog(
+                            //   context: context,
+                            //   builder: (BuildContext context) {
+                            //     return AlertDialog(
+                            //       title: const Text('Input Error'),
+                            //       content: const Text('Please fill out all of the input fields.'),
+                            //       actions: <Widget>[
+                            //         TextButton(
+                            //           onPressed: () {
+                            //             Navigator.of(context).pop(); // Close the dialog
+                            //           },
+                            //           child: const Text(
+                            //             'Close',
+                            //             style: TextStyle(
+                            //               color: Colors.red,
+                            //             ),
+                            //           ),
+                            //         ),
+                            //       ],
+                            //     );
+                            //   },
+                            // );
                           }
                         } catch (e) {
                           print('add card error: $e');
+                          showInformationDialog(
+                              context,
+                              "An error occured" ,
+                              "An unknown error occured. Please try again.");
                         }
                       },
                       () {
@@ -133,7 +141,7 @@ class _AddFlashcardPageState extends State<AddFlashcardPage> {
             child: BuildButton(
               onPressed: () {
                 print(
-                    "cancel button clicked"); //line to test if working ung onPressedLogic XD
+                    "cancel button clicked");
                 Navigator.pop(context);
               },
               buttonText: 'Cancel',

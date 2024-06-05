@@ -22,7 +22,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  bool isLoading = false;
 
 
   @override
@@ -88,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     BuildTextBox(
                       hintText: 'Enter Password',
-                      showPassword: false,
+                      showPassword: true,
                       leftIcon: DeckIcons.lock,
                       rightIcon: Icons.search,
                       controller: passwordController,
@@ -121,12 +120,11 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               const SizedBox(
-                height: 100,
+                height: 50,
               ),
               BuildButton(
                 onPressed: () async {
-                  ///loading dialog
-                  showLoad(context);
+
                   try{
                     await AuthService().signInWithEmail(emailController.text, passwordController.text);
                     await FCMService().renewToken();
@@ -146,15 +144,11 @@ class _LoginPageState extends State<LoginPage> {
                     } else {
                       message = 'Error logging in user!';
                     }
-                    /// stop loading
-                    hideLoad(context);
 
                     ///display error
                     showInformationDialog(context, message, "A problem occured while signing in. Please try again.");
 
                   } catch (e) {
-                    /// stop loading
-                    hideLoad(context);
 
                     ///display error
                     print(e.toString());
@@ -202,7 +196,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
               BuildButton(
                 onPressed: () async{
-                  showLoad(context);
 
                   final authService = AuthService();
                   try {
@@ -227,8 +220,7 @@ class _LoginPageState extends State<LoginPage> {
                     );
                   } catch (e){
                     print(e.toString());
-                    /// stop loading
-                    hideLoad(context);
+
                     ///display error
                     showInformationDialog(context, "Error signing in.","A problem occured while signing in. Please try again.");
                   }
@@ -252,7 +244,7 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     const Text(
                       "Don't have an account? ",
-                      style: TextStyle(fontSize: 16.0),
+                      style: TextStyle(fontSize: 12.0),
                     ),
                     InkWell(
                       onTap: () {
@@ -268,7 +260,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Text(
                           'Sign Up',
                           style: GoogleFonts.nunito(
-                            fontSize: 16,
+                            fontSize: 12,
                             fontWeight: FontWeight.w900,
                             color: DeckColors.white,
                           ),

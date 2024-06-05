@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:msh_checkbox/msh_checkbox.dart';
 import 'package:provider/provider.dart';
 import '../theme/theme_provider.dart';
+
 ///updated methods as of 05/11/24 1:34AM
 ///
 ///
@@ -299,6 +300,7 @@ class BuildCoverImageState extends State<BuildCoverImage> {
     );
   }
 }
+
 class BuildCoverImageUrl extends StatelessWidget {
   final String? imageUrl;
   final double borderRadiusContainer, borderRadiusImage;
@@ -324,16 +326,16 @@ class BuildCoverImageUrl extends StatelessWidget {
         borderRadius: BorderRadius.circular(borderRadiusImage),
         child: imageUrl != null
             ? Image.network(
-          imageUrl!,
-          width: double.infinity,
-          height: double.infinity,
-          fit: BoxFit.cover,
-        )
+                imageUrl!,
+                width: double.infinity,
+                height: double.infinity,
+                fit: BoxFit.cover,
+              )
             : Container(
-          color: backgroundColor,
-          width: double.infinity,
-          height: double.infinity,
-        ),
+                color: backgroundColor,
+                width: double.infinity,
+                height: double.infinity,
+              ),
       ),
     );
   }
@@ -356,14 +358,17 @@ class BuildProfileImageState extends State<BuildProfileImage> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-      border: Border.all(color: DeckColors.backgroundColor, width: 5.0),
-      shape: BoxShape.circle,
-    ),
+        border: Border.all(color: DeckColors.backgroundColor, width: 5.0),
+        shape: BoxShape.circle,
+      ),
       child: CircleAvatar(
         backgroundColor: DeckColors.white,
         backgroundImage: widget.profilePhotofile?.image,
         radius: 60,
-        child: widget.profilePhotofile?.image == null ? const Icon(DeckIcons.account, size: 60, color: DeckColors.backgroundColor) : null,
+        child: widget.profilePhotofile?.image == null
+            ? const Icon(DeckIcons.account,
+                size: 60, color: DeckColors.backgroundColor)
+            : null,
       ),
     );
   }
@@ -481,20 +486,22 @@ class BuildListOfDecksState extends State<BuildListOfDecks> {
               width: 75,
               child: widget.deckImageUrl != null
                   ? Image.network(
-                widget.deckImageUrl!,
-                width: 20,
-                height: 10,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    color: DeckColors.white,
-                    child: Center(child: Icon(Icons.broken_image, color: Colors.grey)),
-                  );
-                },
-              )
+                      widget.deckImageUrl!,
+                      width: 20,
+                      height: 10,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          color: DeckColors.white,
+                          child: Center(
+                              child:
+                                  Icon(Icons.broken_image, color: Colors.grey)),
+                        );
+                      },
+                    )
                   : const Placeholder(
-                color: DeckColors.white,
-              ),
+                      color: DeckColors.white,
+                    ),
             ),
             Expanded(
               child: Padding(
@@ -622,6 +629,7 @@ void showInformationDialog(BuildContext context, String title, String message) {
     },
   );
 }
+
 /// -------------------------- E N D ---------------------------
 /// ---------------------- A C C O U N T -----------------------
 
@@ -675,6 +683,7 @@ class BuildSettingsContainerState extends State<BuildSettingsContainer> {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     _isToggled = themeProvider.isDarkMode;
   }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -699,8 +708,12 @@ class BuildSettingsContainerState extends State<BuildSettingsContainer> {
               Row(
                 children: [
                   Icon(
-                    _isToggled ? (widget.alternateIcon ?? widget.selectedIcon) : widget.selectedIcon,
-                    color: _isToggled ? DeckColors.primaryColor : widget.selectedColor,
+                    _isToggled
+                        ? (widget.alternateIcon ?? widget.selectedIcon)
+                        : widget.selectedIcon,
+                    color: _isToggled
+                        ? DeckColors.primaryColor
+                        : widget.selectedColor,
                     size: 30,
                   ),
                   Padding(
@@ -712,7 +725,9 @@ class BuildSettingsContainerState extends State<BuildSettingsContainer> {
                       style: GoogleFonts.nunito(
                         fontSize: 16,
                         fontWeight: FontWeight.w900,
-                        color: _isToggled ? (widget.textColor ?? widget.textColor) : widget.textColor,
+                        color: _isToggled
+                            ? (widget.textColor ?? widget.textColor)
+                            : widget.textColor,
                       ),
                     ),
                   ),
@@ -903,6 +918,7 @@ class BuildIconButton extends StatelessWidget {
     );
   }
 }
+
 /// ------------------------- E N D ----------------------------
 /// --------------- E D I T  P R O F I L E ---------------------
 
@@ -1013,7 +1029,6 @@ class DeckBox extends StatefulWidget {
 }
 
 class DeckBoxState extends State<DeckBox> {
-
   bool isChecked() {
     return widget.isChecked;
   }
@@ -1163,9 +1178,9 @@ class ifCollectionEmpty extends StatelessWidget {
 
   const ifCollectionEmpty(
       {super.key,
-        required this.ifCollectionEmptyText,
-        this.ifCollectionEmptySubText,
-        required this.ifCollectionEmptyheight});
+      required this.ifCollectionEmptyText,
+      this.ifCollectionEmptySubText,
+      required this.ifCollectionEmptyheight});
 
   @override
   Widget build(BuildContext context) {
@@ -1173,61 +1188,55 @@ class ifCollectionEmpty extends StatelessWidget {
       height: ifCollectionEmptyheight,
       child: Center(
           child:
-          // Container(
-          //     height: MediaQuery.of(context).size.width,
-          //     width: MediaQuery.of(context).size.width - 100, // dunno what size
-          //     decoration: BoxDecoration(
-          //       shape: BoxShape.circle,
-          //       color: Colors.pinkAccent
-          //     ),
-          //     child:
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                  height: MediaQuery.of(context).size.width/2.5,
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child:
-                    Image.asset(
-                      // 'assets/images/HDR-Branding.png',
-                      'assets/images/Deck-Branding7.png',
-                    ),
-                  )
-              ),
-              const SizedBox(
-                  height: 5
-              ),
-              Text(
-                ifCollectionEmptyText,
-                style: GoogleFonts.nunito(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white54,
+              // Container(
+              //     height: MediaQuery.of(context).size.width,
+              //     width: MediaQuery.of(context).size.width - 100, // dunno what size
+              //     decoration: BoxDecoration(
+              //       shape: BoxShape.circle,
+              //       color: Colors.pinkAccent
+              //     ),
+              //     child:
+              Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+              height: MediaQuery.of(context).size.width / 2.5,
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: Image.asset(
+                  // 'assets/images/HDR-Branding.png',
+                  'assets/images/Deck-Logo7.png',
                 ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(
-                  height: 5
-              ),
-              Text(
-                ifCollectionEmptySubText ?? "",
-                style: GoogleFonts.nunito(
-                  fontSize: 14,
-                  fontWeight: FontWeight.normal,
-
-                  color: Colors.white54,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          )
-        // )
-      ),
+              )),
+          const SizedBox(height: 5),
+          Text(
+            ifCollectionEmptyText,
+            style: GoogleFonts.nunito(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.white54,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 5),
+          Text(
+            ifCollectionEmptySubText ?? "",
+            style: GoogleFonts.nunito(
+              fontSize: 14,
+              fontWeight: FontWeight.normal,
+              color: Colors.white54,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      )
+          // )
+          ),
     );
   }
 }
+
 /// ------------------------ E N D -----------------------------
 /// --------------- B O T T O M  S H E E T ---------------------
 
@@ -1377,7 +1386,8 @@ class BuildDeckContainer extends StatefulWidget {
 
 class BuildDeckContainerState extends State<BuildDeckContainer> {
   Color _containerColor = DeckColors.gray;
-  final String defaultImageUrl = "https://firebasestorage.googleapis.com/v0/b/deck-f429c.appspot.com/o/deckCovers%2Fdefault%2FdeckDefault.png?alt=media&token=2b0faebd-9691-4c37-8049-dc30289460c2";
+  final String defaultImageUrl =
+      "https://firebasestorage.googleapis.com/v0/b/deck-f429c.appspot.com/o/deckCovers%2Fdefault%2FdeckDefault.png?alt=media&token=2b0faebd-9691-4c37-8049-dc30289460c2";
 
   @override
   Widget build(BuildContext context) {
@@ -1417,7 +1427,8 @@ class BuildDeckContainerState extends State<BuildDeckContainer> {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: (widget.deckCoverPhotoUrl != null && widget.deckCoverPhotoUrl != "no_image")
+                    color: (widget.deckCoverPhotoUrl != null &&
+                            widget.deckCoverPhotoUrl != "no_image")
                         ? null
                         : DeckColors.coverImageColorSettings,
                     borderRadius: const BorderRadius.only(
@@ -1432,46 +1443,52 @@ class BuildDeckContainerState extends State<BuildDeckContainer> {
                       topLeft: Radius.circular(15.0),
                       topRight: Radius.circular(15.0),
                     ),
-                    child: (widget.deckCoverPhotoUrl != null && widget.deckCoverPhotoUrl != "no_image")
+                    child: (widget.deckCoverPhotoUrl != null &&
+                            widget.deckCoverPhotoUrl != "no_image")
                         ? Image.network(
-                          widget.deckCoverPhotoUrl!,
-                          width: double.infinity,
-                          height: double.infinity,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                          return Image.network(
+                            widget.deckCoverPhotoUrl!,
+                            width: double.infinity,
+                            height: double.infinity,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.network(
+                                defaultImageUrl,
+                                width: double.infinity,
+                                height: double.infinity,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    color: DeckColors.coverImageColorSettings,
+                                    child: const Center(
+                                      child: Icon(Icons.broken_image,
+                                          color: Colors.grey),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          )
+                        : Image.network(
                             defaultImageUrl,
                             width: double.infinity,
                             height: double.infinity,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              color: DeckColors.coverImageColorSettings,
-                              child: const Center(child: Icon(Icons.broken_image, color: Colors.grey),),
-                            );
-                          },
-                        );
-                      },
-                    )
-                        : Image.network(
-                          defaultImageUrl,
-                          width: double.infinity,
-                          height: double.infinity,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            color: DeckColors.coverImageColorSettings,
-                            child: const Center(
-                              child: Icon(Icons.image_not_supported, color: Colors.white),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
+                              return Container(
+                                color: DeckColors.coverImageColorSettings,
+                                child: const Center(
+                                  child: Icon(Icons.image_not_supported,
+                                      color: Colors.white),
+                                ),
+                              );
+                            },
+                          ),
                   ),
+                ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 15.0, left: 10, right: 10),
+                    padding:
+                        const EdgeInsets.only(top: 15.0, left: 10, right: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -1496,8 +1513,6 @@ class BuildDeckContainerState extends State<BuildDeckContainer> {
     );
   }
 }
-
-
 
 /// ------------------------ E N D -----------------------------
 /// --------------- B O T T O M  S H E E T ---------------------
@@ -1583,6 +1598,7 @@ class BuildTabBar extends StatelessWidget {
     );
   }
 }
+
 /// ------------------------ E N D -----------------------------
 /// --------------- B O T T O M  S H E E T ---------------------
 
@@ -1593,7 +1609,6 @@ class BuildTabBar extends StatelessWidget {
 /// ---------------------- S T A R T ---------------------------
 /// --------------- B O T T O M  S H E E T ---------------------
 
-
 class BuildContainerOfFlashCards extends StatefulWidget {
   final VoidCallback onDelete;
   final VoidCallback? onRetrieve, onTap;
@@ -1602,7 +1617,7 @@ class BuildContainerOfFlashCards extends StatefulWidget {
   bool isStarShaded;
   final VoidCallback onStarShaded;
   final VoidCallback onStarUnshaded;
-  
+
   BuildContainerOfFlashCards({
     Key? key,
     required this.onDelete,
@@ -1715,6 +1730,7 @@ class BuildContainerOfFlashCardsState extends State<BuildContainerOfFlashCards>
     );
   }
 }
+
 /// ------------------------ E N D -----------------------------
 /// --------------- B O T T O M  S H E E T ---------------------
 
@@ -1779,16 +1795,8 @@ class DeckDelegate extends SliverPersistentHeaderDelegate {
   final bool hasIcon;
   final IconData icon;
 
-  DeckDelegate(
-      this.backgroundColor,
-      this.headerTitle,
-      this.onPressed,
-      this.hasIcon,
-      this.textStyle,
-      this.max,
-      this.min,
-      this.icon
-      );
+  DeckDelegate(this.backgroundColor, this.headerTitle, this.onPressed,
+      this.hasIcon, this.textStyle, this.max, this.min, this.icon);
 
   @override
   Widget build(
@@ -1832,7 +1840,6 @@ class DeckDelegate extends SliverPersistentHeaderDelegate {
   }
 }
 
-
 /// ------------------------ E N D -----------------------------
 /// ------------ D E C K  S L I V E R H E A D E R --------------
 
@@ -1863,56 +1870,54 @@ class HomeTaskTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       borderRadius: BorderRadius.circular(15.0),
-      color:  Colors.pinkAccent,
-          child: InkWell(
+      color: Colors.pinkAccent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(15.0),
+        onTap: () {
+          if (onPressed != null) {
+            onPressed!();
+          }
+        },
+        child: Container(
+          padding:
+              const EdgeInsets.only(left: 20.0, right: 20, top: 20, bottom: 20),
+          decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15.0),
-
-            onTap: () {
-              if (onPressed != null) {
-                onPressed!();
-              }
-            },
-            child: Container(
-              padding: const EdgeInsets.only(left: 20.0,right:20,top: 20,bottom:20 ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15.0),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: 100,
-                    child: Text(
-                      taskName,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                              color: DeckColors.white,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 100,
-                          child: Text(
-                            deadline,
-                            textAlign: TextAlign.end,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                              color: DeckColors.white,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
           ),
-
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                width: 100,
+                child: Text(
+                  taskName,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: DeckColors.white,
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 100,
+                child: Text(
+                  deadline,
+                  textAlign: TextAlign.end,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: DeckColors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -1972,21 +1977,25 @@ class HomeDeckTile extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       child: deckImageUrl != null
                           ? Image.network(
-                        deckImageUrl!,
-                        width: cardWidth,
-                        height: double.infinity,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            color: DeckColors.gray,
-                            child: const Center(child: Icon(Icons.broken_image, color: Colors.white)),
-                          );
-                        },
-                      )
+                              deckImageUrl!,
+                              width: cardWidth,
+                              height: double.infinity,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  color: DeckColors.gray,
+                                  child: const Center(
+                                      child: Icon(Icons.broken_image,
+                                          color: Colors.white)),
+                                );
+                              },
+                            )
                           : Container(
-                        color: DeckColors.gray,
-                        child: const Center(child: Icon(Icons.image_not_supported, color: Colors.white)),
-                      ),
+                              color: DeckColors.gray,
+                              child: const Center(
+                                  child: Icon(Icons.image_not_supported,
+                                      color: Colors.white)),
+                            ),
                     ),
                   ),
                   Positioned(
@@ -2067,26 +2076,26 @@ class DeckTaskTile extends StatefulWidget {
 }
 
 class DeckTaskTileState extends State<DeckTaskTile> {
-  Color _containerColor = Colors.pinkAccent;
+  Color _containerColor = DeckColors.accentColor;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTapDown: (_) {
         setState(() {
           if (widget.onTap != null) {
-            _containerColor = Colors.pinkAccent.withOpacity(0.7);
+            _containerColor = DeckColors.accentColor.withOpacity(0.7);
           }
         });
       },
       onTapUp: (_) {
         setState(() {
-          _containerColor =Colors.pinkAccent;
+          _containerColor = DeckColors.accentColor;
         });
         widget.onTap?.call();
       },
       onTapCancel: () {
         setState(() {
-          _containerColor = Colors.pinkAccent;
+          _containerColor = DeckColors.accentColor;
         });
       },
       child: Padding(
@@ -2114,8 +2123,7 @@ class DeckTaskTileState extends State<DeckTaskTile> {
                     side: BorderSide(
                       color: DeckColors.white,
                       width: 3.0,
-                    )
-                ),
+                    )),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 15.0),
@@ -2161,31 +2169,25 @@ class DeckTaskTileState extends State<DeckTaskTile> {
   }
 }
 
-
 /// ------------------------- E N D ----------------------------
 /// ------------ D E C K  T A S K T I L E ----------------------
-
-
 
 ///
 /// M E T H O D  T O  C A L L  L O A D I N G
 ///
-
 
 void showLoad(BuildContext context) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return Center(
-        child:
-        CircularProgressIndicator(
-          color:DeckColors.primaryColor,
+        child: CircularProgressIndicator(
+          color: DeckColors.primaryColor,
         ),
       );
     },
   );
 }
-
 
 ///
 /// M E T H O D  T O  H I D E  L O A D I N G

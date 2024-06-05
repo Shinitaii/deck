@@ -102,6 +102,14 @@ class _MainPageState extends State<MainPage> {
     AccountPage(),
   ];
 
+  @override
+  void initState(){
+    super.initState();
+    if(Provider.of<TaskProvider>(context, listen: false).checkIfDeadlineIsToday()) {
+      NotificationService().showNotification(title: 'You have due tasks today!', body: 'Finish them!', payload: 'load');
+    }
+  }
+
   ///  Navbar Icons and Label
   final items = const [
     CurvedNavigationBarItem(
